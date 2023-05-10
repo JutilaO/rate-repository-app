@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native'
 import Text from './Text'
 import theme from '../theme'
 
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   flexDetailContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
   flexName: {
     flex: 1,
@@ -55,39 +55,39 @@ const RepositoryItem = (data) => {
   }
 
   return (
-      <View style={styles.flexContainer}>
-        <View style={styles.flexHeaderContainer}>
-          <View style={styles.flexImage}>
-              <Image source={{uri: item.ownerAvatarUrl}} style={styles.logo}></Image>
-          </View>
-          <View style={styles.flexName}>
-            <Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text>
-            <Text>{item.description}</Text>
-            <View style={styles.flexLanguage}>
-              <Text style={{color: "white"}}>{item.language}</Text>
-            </View>
-          </View>
+    <View style={styles.flexContainer}>
+      <View style={styles.flexHeaderContainer}>
+        <View style={styles.flexImage}>
+          <Image source={{ uri: item.ownerAvatarUrl }} style={styles.logo}></Image>
         </View>
-        <View style={styles.flexDetailContainer}>
-          <View style={styles.flexDetails}>
-            <Text fontWeight="bold">{round(item.stargazersCount)}</Text>
-            <Text>Stars</Text>
-          </View>
-          <View style={styles.flexDetails}>
-            <Text fontWeight="bold">{round(item.forksCount)}</Text>
-            <Text>Forks</Text>
-          </View>
-          <View style={styles.flexDetails}>
-            <Text fontWeight="bold">{round(item.reviewCount)}</Text>
-            <Text>Reviews</Text>
-          </View>
-          <View style={styles.flexDetails}>
-            <Text fontWeight="bold">{round(item.ratingAverage)}</Text>
-            <Text>Rating</Text>
+        <View style={styles.flexName}>
+          <Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text>
+          <Text>{item.description}</Text>
+          <View style={styles.flexLanguage}>
+            <Text style={{ color: 'white' }}>{item.language}</Text>
           </View>
         </View>
       </View>
-  );
-};
+      <View style={styles.flexDetailContainer}>
+        <View style={styles.flexDetails}>
+          <Text fontWeight="bold">{round(item.stargazersCount)}</Text>
+          <Text>Stars</Text>
+        </View>
+        <View style={styles.flexDetails}>
+          <Text fontWeight="bold">{round(item.forksCount)}</Text>
+          <Text>Forks</Text>
+        </View>
+        <View style={styles.flexDetails}>
+          <Text fontWeight="bold">{round(item.reviewCount)}</Text>
+          <Text>Reviews</Text>
+        </View>
+        <View style={styles.flexDetails}>
+          <Text fontWeight="bold">{round(item.ratingAverage)}</Text>
+          <Text>Rating</Text>
+        </View>
+      </View>
+    </View>
+  )
+}
 
-export default RepositoryItem;
+export default RepositoryItem
