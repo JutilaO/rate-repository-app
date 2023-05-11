@@ -1,5 +1,6 @@
-import { RepositoryListContainer } from "../../components/RepositoryList";
-import {render, screen} from '@testing-library/react-native'
+import { RepositoryListContainer } from '../../components/RepositoryList'
+import { render, screen } from '@testing-library/react-native'
+import { NativeRouter } from 'react-router-native'
 
 describe('RepositoryList', () => {
   describe('RepositoryListContainer', () => {
@@ -45,11 +46,10 @@ describe('RepositoryList', () => {
               'WyJhc3luYy1saWJyYXJ5LnJlYWN0LWFzeW5jIiwxNTg4NjU2NzUwMDc2XQ==',
           },
         ],
-      };
+      }
 
-      render(<RepositoryListContainer repositories={repositories}/>);
-      const repositoryItems = screen.getAllByTestId('repositoryItem');
-      const [firstRepositoryItem, secondRepositoryItem] = repositoryItems;
+      render(<NativeRouter><RepositoryListContainer repositories={repositories}/></NativeRouter>)
+      const repositoryItems = screen.getAllByTestId('repositoryItem')
 
       expect(repositoryItems.length).toBe(2)
       expect(screen.getByText('jaredpalmer/formik')).toBeDefined()
@@ -68,7 +68,7 @@ describe('RepositoryList', () => {
       expect(reviews.length).toBe(2)
       expect(reviews[0]).toBeDefined()
       expect(reviews[1]).toBeDefined()
-      
-    });
-  });
-});
+
+    })
+  })
+})

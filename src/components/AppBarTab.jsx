@@ -12,7 +12,7 @@ const AppBarTab = (data) => {
   return <View style={styles.container}>
     <Pressable>
       <Link to={data.data.path} onPress={data.data.onPress}>
-        <Text fontSize="subheading" fontWeight="bold" color="primary">
+        <Text fontSize="subheading" fontWeight="bold" style={{ color: 'white' }}>
           {data.data.name}
         </Text>
       </Link>

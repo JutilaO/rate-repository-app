@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
     padding: 3,
     marginTop: 8,
     backgroundColor: theme.colors.primary,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    color: 'white'
   }
 })
 
@@ -42,7 +43,7 @@ const validationSchema = yup.object().shape({
     .required('Password is required')
 })
 
-export const SignInContainer = ({onSubmit}) => {
+export const SignInContainer = ({ onSubmit }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
       {({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}

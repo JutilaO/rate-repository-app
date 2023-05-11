@@ -1,6 +1,8 @@
-import { View, Image, StyleSheet } from 'react-native'
+import { View, Image, StyleSheet, Pressable } from 'react-native'
 import Text from './Text'
 import theme from '../theme'
+import { Link } from 'react-router-native'
+import * as Linking from 'expo-linking'
 
 const styles = StyleSheet.create({
   logo: {
@@ -9,6 +11,7 @@ const styles = StyleSheet.create({
     borderRadius: 15
   },
   flexContainer: {
+    paddingTop: 8,
     flexDirection: 'column',
     padding: 5,
     backgroundColor: 'white'
@@ -39,6 +42,14 @@ const styles = StyleSheet.create({
     maxWidth: '25%',
     textAlign: 'center',
     padding: 2
+  },
+  buttonStyle: {
+    textAlign: 'center',
+    width: '50%',
+    padding: 3,
+    marginTop: 8,
+    backgroundColor: theme.colors.primary,
+    alignSelf: 'center'
   }
 })
 
@@ -54,38 +65,59 @@ const RepositoryItem = (data) => {
     return number
   }
 
-  return (
-    <View style={styles.flexContainer} testID="repositoryItem">
-      <View style={styles.flexHeaderContainer}>
-        <View style={styles.flexImage}>
-          <Image source={{ uri: item.ownerAvatarUrl }} style={styles.logo}></Image>
-        </View>
-        <View style={styles.flexName}>
-          <Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text>
-          <Text>{item.description}</Text>
-          <View style={styles.flexLanguage}>
-            <Text style={{ color: 'white' }}>{item.language}</Text>
+  const openInGitHub = () => {
+    Linking.openURL(item.url)
+  }
+
+  const Item = () => {
+    return (
+      <View style={styles.flexContainer} testID="repositoryItem">
+        <View style={styles.flexHeaderContainer}>
+          <View style={styles.flexImage}>
+            <Image source={{ uri: item.ownerAvatarUrl }} style={styles.logo}></Image>
+          </View>
+          <View style={styles.flexName}>
+            <Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text>
+            <Text>{item.description}</Text>
+            <View style={styles.flexLanguage}>
+              <Text style={{ color: 'white', textAlign: 'center' }}>{item.language}</Text>
+            </View>
           </View>
         </View>
+        <View style={styles.flexDetailContainer}>
+          <View style={styles.flexDetails}>
+            <Text fontWeight="bold" style={{ textAlign: 'center' }}>{round(item.stargazersCount)}</Text>
+            <Text style={{ textAlign: 'center' }}>Stars</Text>
+          </View>
+          <View style={styles.flexDetails}>
+            <Text fontWeight="bold" style={{ textAlign: 'center' }}>{round(item.forksCount)}</Text>
+            <Text style={{ textAlign: 'center' }}>Forks</Text>
+          </View>
+          <View style={styles.flexDetails}>
+            <Text fontWeight="bold" style={{ textAlign: 'center' }}>{round(item.reviewCount)}</Text>
+            <Text style={{ textAlign: 'center' }}>Reviews</Text>
+          </View>
+          <View style={styles.flexDetails}>
+            <Text fontWeight="bold" style={{ textAlign: 'center' }}>{round(item.ratingAverage)}</Text>
+            <Text style={{ textAlign: 'center' }}>Rating</Text>
+          </View>
+        </View>
+        {
+          item.button &&
+          <Pressable style={styles.buttonStyle} onPress={openInGitHub}>
+            <Text style={{ color: 'white', textAlign: 'center' }}>Open in GitHub</Text>
+          </Pressable>
+        }
       </View>
-      <View style={styles.flexDetailContainer}>
-        <View style={styles.flexDetails}>
-          <Text fontWeight="bold">{round(item.stargazersCount)}</Text>
-          <Text>Stars</Text>
-        </View>
-        <View style={styles.flexDetails}>
-          <Text fontWeight="bold">{round(item.forksCount)}</Text>
-          <Text>Forks</Text>
-        </View>
-        <View style={styles.flexDetails}>
-          <Text fontWeight="bold">{round(item.reviewCount)}</Text>
-          <Text>Reviews</Text>
-        </View>
-        <View style={styles.flexDetails}>
-          <Text fontWeight="bold">{round(item.ratingAverage)}</Text>
-          <Text>Rating</Text>
-        </View>
-      </View>
+    )
+  }
+
+  return (
+    <View>
+      {!item.button && <Link to={`/repositories/${item.id}`}>
+        <Item />
+      </Link>}
+      {item.button && <Item />}
     </View>
   )
 }
