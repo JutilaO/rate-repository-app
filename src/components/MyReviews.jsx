@@ -1,7 +1,9 @@
-import { View, FlatList, StyleSheet } from 'react-native'
+import { View, FlatList, StyleSheet, Pressable, Alert } from 'react-native'
 import Text from './Text'
 import theme from '../theme'
 import useMe from '../hooks/useMe'
+import { useDeepLinking, useNavigate } from 'react-router-native';
+import useDeleteReview from '../hooks/useDeleteReview';
 
 const styles = StyleSheet.create({
   flexContainer: {
@@ -34,11 +36,52 @@ const styles = StyleSheet.create({
   },
   textPadding: {
     paddingLeft: 60
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
+  buttonStyle: {
+    textAlign: 'center',
+    width: '100%',
+    padding: 3,
+    marginTop: 8,
+    color: 'white',
+    backgroundColor: theme.colors.primary,
+    borderRadius: 5
+  },
+  buttonDeleteStyle: {
+    textAlign: 'center',
+    width: '100%',
+    padding: 3,
+    marginTop: 8,
+    marginLeft: 25,
+    color: 'white',
+    backgroundColor: 'red',
+    borderRadius: 5
   }
 })
 
 const ReviewItem = ({ review }) => {
-  console.log(review)
+  const [deleteReview] = useDeleteReview()
+  const navigate = useNavigate()
+
+  const deleteReviewButton = () => {
+    Alert.alert('Delete review', 'Are you sure you want to delete the review?', [{text: 'Cancel'}, {text: 'Delete', onPress: () => deleteThis()}])
+    
+    const deleteThis = async () => {
+      try {
+        await deleteReview(review.id)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+  
+  const viewRepository = () => {
+    navigate(`/repositories/${review.id}`)
+  }
+  
   return (
     <View style={styles.flexContainer} >
       <View style={styles.flexHeaderContainer}>
@@ -51,6 +94,14 @@ const ReviewItem = ({ review }) => {
         </View>
       </View>
       <Text style={styles.textPadding}>{review.text}</Text>
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={viewRepository}>
+          <Text style={styles.buttonStyle}>View repository</Text>
+        </Pressable>
+        <Pressable onPress={deleteReviewButton}>
+          <Text style={styles.buttonDeleteStyle}>Delete review</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -70,7 +121,7 @@ const MyReviews = () => {
     <View>
       <FlatList
         data={reviewNodes}
-        renderItem={({ item }) => <ReviewItem review={item} />}
+        renderItem={({ item }) => <ReviewItem review={item}/>}
         ItemSeparatorComponent={ItemSeparator}
       />
     </View>
