@@ -6,7 +6,7 @@ import { useState } from 'react'
 import TextInput from './TextInput'
 import { useDebounce } from 'use-debounce'
 
-export const RepositoryListContainer = ({ repositories, sortType, setSortType, searchWord, setSearchWord }) => {
+export const RepositoryListContainer = ({ repositories, sortType, setSortType, searchWord, setSearchWord, onEndReach }) => {
   const ItemSeparator = () => <View style={{ height: 8 }} />
 
   const repositoryNodes = repositories
@@ -19,20 +19,22 @@ export const RepositoryListContainer = ({ repositories, sortType, setSortType, s
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => <RepositoryItem data={item}/>}
       ListHeaderComponent={<PickerComponent sortType={sortType} setSortType={setSortType} searchWord={searchWord} setSearchWord={setSearchWord}/>}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   )
 }
 
-const Searchbar = ({ searchWord, setSearchWord }) => {
+const Searchbar = ({ setSearchWord }) => {
   return (
     <TextInput onChangeText={(text) => setSearchWord(text)} style={{ backgroundColor: 'white' }} placeholder="Search" autofocus/>
   )
 }
 
-const PickerComponent = ({ sortType, setSortType, searchWord, setSearchWord }) => {
+const PickerComponent = ({ sortType, setSortType, setSearchWord }) => {
   return (
     <View>
-      <Searchbar searchWord={searchWord} setSearchWord={setSearchWord}/>
+      <Searchbar setSearchWord={setSearchWord}/>
       <Picker
         selectedValue={sortType}
         onValueChange={(itemValue) => setSortType(itemValue)}>
@@ -48,9 +50,13 @@ const RepositoryList = () => {
   const [sortType, setSortType] = useState()
   const [searchWord, setSearchWord] = useState('')
   const [searchKeyword] = useDebounce(searchWord, 1500)
-  const repositories = useRepositories(sortType, searchKeyword)
+  const {repositories, fetchMore} = useRepositories({sortType, searchKeyword, first: 2})
 
-  return <RepositoryListContainer repositories={repositories} sortType={sortType} setSortType={setSortType} searchWord={searchWord} setSearchWord={setSearchWord}/>
+  const onEndReach = () => {
+    fetchMore()
+  }
+
+  return <RepositoryListContainer repositories={repositories} sortType={sortType} setSortType={setSortType} setSearchWord={setSearchWord} onEndReach={onEndReach}/>
 }
 
 export default RepositoryList

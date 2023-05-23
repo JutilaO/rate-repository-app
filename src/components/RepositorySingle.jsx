@@ -104,16 +104,20 @@ const ReviewItem = ({ review }) => {
 
 const RepositorySingle = () => {
   const id = useParams().id
-  const reviews = useReview(id)
   const repository = useRepository(id)
+  const {reviews, fetchMore} = useReview({repositoryId: id, first: 2})
   const ItemSeparator = () => <View style={{ height: 8 }} />
 
   if(!repository) return null
   if(!reviews) return null
 
   const reviewNodes = reviews
-    ? reviews.repository.reviews.edges.map(edge => edge.node)
+    ? reviews.reviews.edges.map(edge => edge.node)
     : []
+
+  function onEndReach() {
+    fetchMore();
+  }
 
   return (
     <View>
@@ -122,6 +126,8 @@ const RepositorySingle = () => {
         renderItem={({ item }) => <ReviewItem review={item} />}
         ListHeaderComponent={() =>  <RepositoryInfo repository={repository}/>}
         ItemSeparatorComponent={ItemSeparator}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     </View>
   )
