@@ -48,8 +48,8 @@ const validationSchema = yup.object().shape({
     .max(100)
     .required('Rating is required'),
   text: yup
-  .string()
-  .required('Review is required')
+    .string()
+    .required('Review is required')
 })
 
 export const CreateReviewContainer = ({ onSubmit }) => {

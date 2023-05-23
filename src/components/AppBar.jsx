@@ -27,8 +27,9 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarTab data={{ name: 'Repositories', path: 'repositories' }}/>
+        {me.data && !me.data.me && <AppBarTab data={{ name: 'Sign up', path: 'signup' }}/>}
         {me.data && !me.data.me && <AppBarTab data={{ name: 'Sign in', path: 'signin' }}/>}
-        {me.data && me.data.me && <AppBarTab data={{name: 'Create a review', path: 'createReview'}}/>}
+        {me.data && me.data.me && <AppBarTab data={{ name: 'Create a review', path: 'createReview' }}/>}
         {me.data && me.data.me && <AppBarTab data={{ name: 'Sign out', path: 'repositories', onPress: signOut }} />}
       </ScrollView>
     </View>
