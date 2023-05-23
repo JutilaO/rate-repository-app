@@ -4,7 +4,7 @@ import useRepositories from '../hooks/useRepositories'
 import { Picker } from '@react-native-picker/picker'
 import { useState } from 'react'
 import TextInput from './TextInput'
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from 'use-debounce'
 
 export const RepositoryListContainer = ({ repositories, sortType, setSortType, searchWord, setSearchWord }) => {
   const ItemSeparator = () => <View style={{ height: 8 }} />
@@ -23,16 +23,16 @@ export const RepositoryListContainer = ({ repositories, sortType, setSortType, s
   )
 }
 
-const Searchbar = ({searchWord, setSearchWord}) => {
+const Searchbar = ({ searchWord, setSearchWord }) => {
   return (
-    <TextInput onChangeText={(text) => setSearchWord(text)} value={searchWord} style={{backgroundColor: 'white'}} placeholder="Search" autofocus/>
+    <TextInput onChangeText={(text) => setSearchWord(text)} style={{ backgroundColor: 'white' }} placeholder="Search" autofocus/>
   )
 }
 
 const PickerComponent = ({ sortType, setSortType, searchWord, setSearchWord }) => {
   return (
     <View>
-      <Searchbar  searchWord={searchWord} setSearchWord={setSearchWord}/>
+      <Searchbar searchWord={searchWord} setSearchWord={setSearchWord}/>
       <Picker
         selectedValue={sortType}
         onValueChange={(itemValue) => setSortType(itemValue)}>

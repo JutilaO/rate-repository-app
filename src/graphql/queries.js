@@ -28,12 +28,26 @@ query Repositories($orderDirection: OrderDirection, $orderBy: AllRepositoriesOrd
 `
 
 export const ME = gql`
-{
-  me {
-    id
-    username
+  query Me($includeReviews: Boolean = false) {
+    me {
+      username
+      id
+      reviews@include(if: $includeReviews) {
+        edges {
+          node {
+            repository {
+              id
+              fullName
+            }
+            createdAt
+            rating
+            text
+            id
+          }
+        }
+      }
+    }
   }
-}
 `
 
 export const GET_REPOSITORY = gql`

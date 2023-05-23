@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 const AppBar = () => {
   const apolloClient = useApolloClient()
   const authStorage = useAuthStorage()
-  const me = useMe()
+  const me = useMe({includeReviews: false})
 
   const signOut = async () => {
     await authStorage.removeAccessToken()
@@ -27,10 +27,11 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <AppBarTab data={{ name: 'Repositories', path: 'repositories' }}/>
-        {me.data && !me.data.me && <AppBarTab data={{ name: 'Sign up', path: 'signup' }}/>}
-        {me.data && !me.data.me && <AppBarTab data={{ name: 'Sign in', path: 'signin' }}/>}
-        {me.data && me.data.me && <AppBarTab data={{ name: 'Create a review', path: 'createReview' }}/>}
-        {me.data && me.data.me && <AppBarTab data={{ name: 'Sign out', path: 'repositories', onPress: signOut }} />}
+        {!me && <AppBarTab data={{ name: 'Sign up', path: 'signup' }}/>}
+        {!me && <AppBarTab data={{ name: 'Sign in', path: 'signin' }}/>}
+        {me && <AppBarTab data={{ name: 'Create a review', path: 'createReview' }}/>}
+        {me && <AppBarTab data={{name: 'My reviews', path: 'myreviews'}}/>}
+        {me && <AppBarTab data={{ name: 'Sign out', path: 'repositories', onPress: signOut }} />}
       </ScrollView>
     </View>
   )
